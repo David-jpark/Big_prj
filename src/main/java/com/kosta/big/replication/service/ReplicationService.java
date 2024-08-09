@@ -3,7 +3,7 @@ package com.kosta.big.replication.service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class ReplicationService {
 
     @Transactional

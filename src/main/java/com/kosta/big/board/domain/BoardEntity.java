@@ -1,31 +1,33 @@
 package com.kosta.big.board.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
-@Data
-@RequiredArgsConstructor
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "board3")
-public class BoardEntity {
+@Table(name = "board10")
+public class BoardEntity implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name="global_seq_id", strategy = "com.kosta.big.board.snowflake.SnowFlakeGenerator")
+    @GeneratedValue(generator = "global_seq_id")
     @Column(name = "bseq")
     private Long bseq;
 
     @Column(name = "title", length = 50, nullable = false)
     private String title;
 
-    @Column(name = "content", length = 500)
-    private String content;
+    @Column(name = "contents", length = 500)
+    private String contents;
 
     @Column(name = "regid", length = 50, updatable = false, columnDefinition = "VARCHAR2(20) DEFAULT 'testUser'")
     private String regid;
@@ -43,5 +45,10 @@ public class BoardEntity {
         if (this.regdate == null) {
             this.regdate = new Date();
         }
+    }
+
+    // 팩토리 메서드 추가
+    public static BoardEntity create() {
+        return new BoardEntity();
     }
 }
